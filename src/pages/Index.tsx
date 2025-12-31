@@ -1,12 +1,41 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { ChapterSidebar } from '@/components/journal/ChapterSidebar';
+import { ChapterView } from '@/components/journal/ChapterView';
+import { useJournal } from '@/hooks/useJournal';
 
 const Index = () => {
+  const {
+    chapters,
+    activeChapter,
+    activeChapterId,
+    setActiveChapterId,
+    createChapter,
+    updateChapterTitle,
+    deleteChapter,
+    addEntry,
+    updateEntry,
+    deleteEntry,
+  } = useJournal();
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="flex min-h-screen bg-background">
+      <ChapterSidebar
+        chapters={chapters}
+        activeChapterId={activeChapterId}
+        onSelectChapter={setActiveChapterId}
+        onCreateChapter={createChapter}
+      />
+
+      <ChapterView
+        chapter={activeChapter}
+        onUpdateTitle={(title) => updateChapterTitle(activeChapterId, title)}
+        onDeleteChapter={() => deleteChapter(activeChapterId)}
+        onAddEntry={addEntry}
+        onUpdateEntry={updateEntry}
+        onDeleteEntry={deleteEntry}
+      />
+
+      {/* Right column - intentionally empty */}
+      <div className="hidden lg:block w-[200px] flex-shrink-0" />
     </div>
   );
 };
