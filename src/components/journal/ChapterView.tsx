@@ -56,7 +56,7 @@ export function ChapterView({
 
   return (
     <>
-      <main className="flex-1 min-h-screen">
+      <main className="flex-1 min-h-screen pb-32">
         <div className="max-w-[720px] mx-auto px-8 py-16">
           <ChapterHeader
             chapter={chapter}
@@ -84,13 +84,6 @@ export function ChapterView({
             )}
           </div>
 
-          {/* Composer */}
-          <JournalComposer
-            onSaveText={handleSaveText}
-            onStartVoice={() => setMode('voice')}
-            onStartImage={() => setMode('image')}
-          />
-
           {/* Reflect Action */}
           <div className="mt-8">
             <button
@@ -103,6 +96,17 @@ export function ChapterView({
           </div>
         </div>
       </main>
+
+      {/* Fixed Bottom Composer */}
+      <div className="fixed bottom-0 left-[280px] right-[200px] bg-background/80 backdrop-blur-xl border-t border-border/50">
+        <div className="max-w-[720px] mx-auto px-8 py-4">
+          <JournalComposer
+            onSaveText={handleSaveText}
+            onStartVoice={() => setMode('voice')}
+            onStartImage={() => setMode('image')}
+          />
+        </div>
+      </div>
 
       {/* Modals */}
       {mode === 'voice' && (
