@@ -30,7 +30,7 @@ export function JournalComposer({ onSaveText, onStartVoice, onStartImage }: Jour
   };
 
   return (
-    <div className="mt-12">
+    <div>
       <div className="bg-secondary rounded-xl p-4">
         <textarea
           ref={textareaRef}
