@@ -1,15 +1,15 @@
 import { useState } from 'react';
-import { Pen, Mic, Image, Sparkles } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 import { Chapter } from '@/types/journal';
 import { ChapterHeader } from './ChapterHeader';
 import { EntryBlock } from './EntryBlock';
-import { WritingMode } from './WritingMode';
+import { JournalComposer } from './JournalComposer';
 import { VoiceRecorder } from './VoiceRecorder';
 import { ImageUploader } from './ImageUploader';
 import { ReflectDialog } from './ReflectDialog';
 import { useToast } from '@/hooks/use-toast';
 
-type Mode = 'reading' | 'writing' | 'voice' | 'image';
+type Mode = 'reading' | 'voice' | 'image';
 
 interface ChapterViewProps {
   chapter: Chapter;
@@ -32,9 +32,8 @@ export function ChapterView({
   const [showReflectDialog, setShowReflectDialog] = useState(false);
   const { toast } = useToast();
 
-  const handleSaveEntry = (content: string) => {
+  const handleSaveText = (content: string) => {
     onAddEntry({ type: 'text', content });
-    setMode('reading');
   };
 
   const handleSaveVoice = (transcript: string) => {
@@ -85,53 +84,27 @@ export function ChapterView({
             )}
           </div>
 
-          {/* Actions */}
-          <div className="mt-16 pt-8 border-t border-border/30">
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() => setMode('writing')}
-                className="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-foreground bg-secondary hover:bg-muted rounded-lg transition-colors"
-              >
-                <Pen className="w-4 h-4" />
-                Write
-              </button>
-              <button
-                onClick={() => setMode('voice')}
-                className="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-foreground bg-secondary hover:bg-muted rounded-lg transition-colors"
-              >
-                <Mic className="w-4 h-4" />
-                Voice
-              </button>
-              <button
-                onClick={() => setMode('image')}
-                className="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-foreground bg-secondary hover:bg-muted rounded-lg transition-colors"
-              >
-                <Image className="w-4 h-4" />
-                Image
-              </button>
-            </div>
+          {/* Composer */}
+          <JournalComposer
+            onSaveText={handleSaveText}
+            onStartVoice={() => setMode('voice')}
+            onStartImage={() => setMode('image')}
+          />
 
-            <div className="mt-8">
-              <button
-                onClick={() => setShowReflectDialog(true)}
-                className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
-              >
-                <Sparkles className="w-4 h-4" />
-                Reflect with Norm
-              </button>
-            </div>
+          {/* Reflect Action */}
+          <div className="mt-8">
+            <button
+              onClick={() => setShowReflectDialog(true)}
+              className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
+            >
+              <Sparkles className="w-4 h-4" />
+              Reflect with Norm
+            </button>
           </div>
         </div>
       </main>
 
       {/* Modals */}
-      {mode === 'writing' && (
-        <WritingMode
-          onSave={handleSaveEntry}
-          onCancel={() => setMode('reading')}
-        />
-      )}
-
       {mode === 'voice' && (
         <VoiceRecorder
           onSave={handleSaveVoice}
